@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Create an Account | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page customer-auth-page">
+  <div class="customer-auth-layout">
+    <aside class="auth-story"><div class="auth-story-content"><span class="overline light">JOIN THE HOUSE</span><h2>A signature<br><em>worth keeping.</em></h2><p>Sign up for your own corner of the house: saved order history, a quicker demo checkout and a welcome that feels personal.</p><span class="auth-story-footer">DEVOTION IN EVERY NOTE.</span></div></aside>
+    <section class="auth-panel"><p class="eyebrow">Become part of the story</p><h1 class="page-title">Create account<span class="gold-period">.</span></h1><p class="page-subtitle">Your own customer profile, separate from the staff register.</p>
+      {% if error %}<p class="flash" role="alert">{{ error }}</p>{% endif %}
+      <form class="form account-form" action="{{ url_for('customer_register') }}" method="post"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="next" value="{{ request.args.get('next', '') or request.form.get('next', '') }}"><label>Full name<input type="text" name="full_name" minlength="2" maxlength="100" autocomplete="name" required value="{{ request.form.get('full_name', '') }}" placeholder="Your full name"></label><label>Email address<input type="email" name="email" maxlength="160" autocomplete="email" required value="{{ request.form.get('email', '') }}" placeholder="you@example.com"></label><div class="form-duo"><label>Password<input type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="At least 8 characters"></label><label>Confirm password<input type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="Repeat password"></label></div><button class="btn btn-ink btn-wide" type="submit">Create my account <span>↗</span></button></form>
+      <p class="auth-switch">Already a customer? <a href="{{ url_for('customer_login', next=request.args.get('next', '') or request.form.get('next', '')) }}">Sign in ↗</a></p>
+      <p class="account-helper">For project demonstration purposes. No real payment processing.</p>
+    </section>
+  </div>
+</main>
+{% endblock %}

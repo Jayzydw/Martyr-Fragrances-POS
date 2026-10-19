@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#12100e"><title>{% block title %}House Register | Martyr{% endblock %}</title><link rel="stylesheet" href="/style.css?v=5"></head>
+<body class="admin">
+  <a class="skip-link" href="#admin-main">Skip to content</a>
+  <input type="checkbox" id="admin-menu" class="admin-menu-toggle" aria-label="Toggle admin menu">
+  <aside class="side" aria-label="Admin sidebar"><div class="side-brand"><a class="brand" href="/admin"><img src="/brand/martyr_logo_mark.png" alt=""><span>MARTYR<small>HOUSE REGISTER</small></span></a><p class="sidebar-caption">POINT OF SALE / DEMO</p></div>
+    <nav aria-label="Admin navigation"><p class="nav-group">WORKSPACE</p>
+      <a href="/admin" class="{% if request.endpoint == 'admin_home' %}active{% endif %}"><span class="nav-icon">◫</span> Overview</a>
+      <a href="/admin/register" class="{% if request.endpoint == 'admin_register' %}active{% endif %}"><span class="nav-icon">▦</span> New sale</a>
+      <p class="nav-group">OPERATIONS</p>
+      <a href="/admin/products" class="{% if request.endpoint == 'admin_products' %}active{% endif %}"><span class="nav-icon">◈</span> Products</a>
+      <a href="/admin/stock" class="{% if request.endpoint in ['admin_stock', 'admin_stock_submit'] %}active{% endif %}"><span class="nav-icon">▥</span> Stock</a>
+      <a href="/admin/sales" class="{% if request.endpoint == 'admin_sales' %}active{% endif %}"><span class="nav-icon">↗</span> Sales</a>
+      <a href="/admin/expenses" class="{% if request.endpoint == 'admin_expenses' %}active{% endif %}"><span class="nav-icon">⊖</span> Expenses</a>
+      <p class="nav-group">INSIGHTS</p>
+      <a href="/admin/reports" class="{% if request.endpoint == 'admin_reports' %}active{% endif %}"><span class="nav-icon">▤</span> Reports</a>
+      <a href="/admin/history" class="{% if request.endpoint == 'admin_history' %}active{% endif %}"><span class="nav-icon">◷</span> Inventory history</a>
+    </nav><div class="sidebar-bottom"><a href="/" class="sidebar-shop" target="_blank" rel="noopener">View storefront <span>↗</span></a><form method="post" action="/admin/logout"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button type="submit" class="sidebar-logout">Sign out <span>→</span></button></form><div class="sidebar-user"><span class="user-avatar">M</span><span>{{ admin_name }}<small>Administrator</small></span></div></div>
+  </aside>
+  <div class="admin-workspace"><header class="admin-topbar"><label for="admin-menu" class="admin-menu-btn" aria-label="Toggle menu">☰</label><span class="admin-breadcrumb">MARTYR <span>/</span> HOUSE REGISTER <span>/</span> {% block breadcrumb %}Overview{% endblock %}</span><span class="admin-demo"><span></span> DEMO MODE</span></header>
+    <main id="admin-main" class="admin-main"><div class="admin-page-heading"><div><p class="eyebrow">{% block eyebrow %}House overview{% endblock %}</p><h1>{% block heading %}Overview{% endblock %}</h1><p class="admin-page-subtitle">{% block subtitle %}Everything happening in the house, at a glance.{% endblock %}</p></div>{% block page_action %}{% endblock %}</div>
+      {% with messages = get_flashed_messages() %}{% for message in messages %}<p class="flash" role="status">{{ message }}</p>{% endfor %}{% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="admin-footer"><span>MARTYR FRAGRANCES</span><span>DEMO POINT OF SALE · {{ today[:4] }}</span></footer>
+  </div>
+  <script src="/site.js?v=5" defer></script>
+</body></html>

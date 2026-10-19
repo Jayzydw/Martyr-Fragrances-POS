@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Words from the Wearers | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page reviews-page">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">From the wearers</p>
+      <h1 class="page-title">The lasting word<span class="gold-period">.</span></h1>
+      <p class="page-subtitle">Every signature scent has its own story.</p>
+    </div>
+    <span class="edition-stamp">NOTES FROM THE COMMUNITY</span>
+  </div>
+  {% if reviews %}
+  <section data-reviews-carousel aria-label="Customer testimonials">
+    <div class="reviews-meta">
+      <p class="overline">Real words. Lasting impressions.</p>
+      <div class="reviews-controls" data-reviews-controls hidden>
+        <span class="review-count">{{ '%02d'|format(reviews|length) }} STORIES</span>
+        <button type="button" class="review-nav" data-review-prev aria-label="Previous review">←</button>
+        <button type="button" class="review-toggle" data-review-toggle aria-label="Pause automatic review scrolling" aria-pressed="false">Pause</button>
+        <button type="button" class="review-nav" data-review-next aria-label="Next review">→</button>
+      </div>
+    </div>
+    <div class="review-grid" data-reviews-track>
+      {% for review in reviews %}
+      <article class="review-card">
+        <div class="review-top">
+          <span>{{ '%02d'|format(loop.index) }} / TESTIMONIAL</span>
+          <span class="stars" aria-label="{{ review.stars }} out of five stars">{{ '★' * review.stars }}{{ '☆' * (5 - review.stars) }}</span>
+        </div>
+        <blockquote>“{{ review.quote }}”</blockquote>
+        <div class="review-author">
+          <span class="review-avatar" aria-hidden="true">{{ review.author_name[0] }}</span>
+          <div><strong>{{ review.author_name }}</strong><span>{{ review.product_name }}</span></div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="reviews-caption"><span data-reviews-status>Customer stories from the Martyr community</span><span>DEVOTION IN EVERY NOTE ↗</span></p>
+  </section>
+  {% else %}
+  <div class="review-empty">The first stories are coming soon.</div>
+  {% endif %}
+</main>
+{% endblock %}

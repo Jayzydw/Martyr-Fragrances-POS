@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}The Collection | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page collection-page">
+  <div class="page-heading"><div><p class="eyebrow">The signature edit</p><h1 class="page-title">The collection<span class="gold-period">.</span></h1><p class="page-subtitle">Distinctive notes. Unforgettable presence. Find your signature.</p></div><span class="edition-stamp">MARTYR / EAU DE PARFUM</span></div>
+  {% with messages = get_flashed_messages() %}{% for message in messages %}<p class="flash" role="status">{{ message }}</p>{% endfor %}{% endwith %}
+  <div class="catalog-toolbar"><span class="item-count"><span data-results-count>{{ products|length }}</span> FRAGRANCES</span><div class="catalog-filters" role="group" aria-label="Availability filter"><button type="button" class="filter-chip selected" data-filter="all">All</button><button type="button" class="filter-chip" data-filter="available">Available</button><button type="button" class="filter-chip" data-filter="soldout">Sold out</button></div><label class="search-field"><span class="sr-only">Search fragrances</span><input type="search" data-search placeholder="Search by name..." autocomplete="off"><span aria-hidden="true">⌕</span></label></div>
+  <div class="catalog collection-grid" data-catalog>
+    {% for product in products %}
+    <a class="scent" href="/product/{{ product.id }}" data-name="{{ product.name|lower }} {{ product.blurb|lower }}" data-stock="{{ product.stock }}">
+      <div class="scent-frame"><span class="scent-tag">MARTYR FRAGRANCES</span>{% if product.stock == 0 %}<span class="stock-tag">SOLD OUT</span>{% elif product.stock <= product.reorder_level %}<span class="stock-tag limited">LIMITED STOCK</span>{% endif %}{% if product.image %}<img loading="lazy" src="{{ product.image }}" alt="{{ product.name }} fragrance bottle">{% else %}<span class="product-monogram">M.</span>{% endif %}<span class="scent-arrow">↗</span></div>
+      <div class="scent-details"><div><p class="scent-name">{{ product.name }}</p><p class="scent-size">{{ product.size_label }} · Eau de parfum</p></div><p class="scent-price">{{ product.price|peso }}</p></div>
+    </a>
+    {% endfor %}
+  </div>
+  <div class="empty-search" data-empty-search hidden><span class="script">No match found.</span><p>Try another name or select a different filter.</p></div>
+</main>
+{% endblock %}

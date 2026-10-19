@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page product-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/collections">Collections</a><span>/</span><strong>{{ product.name }}</strong></nav>
+  {% with messages = get_flashed_messages() %}{% for message in messages %}<p class="flash" role="status">{{ message }}</p>{% endfor %}{% endwith %}
+  <div class="product-layout">
+    <section class="product-showcase" aria-label="{{ product.name }} bottle and main accords">
+      <div class="portrait"><span class="portrait-label">MARTYR / SIGNATURE COLLECTION</span>{% if product.image %}<img src="{{ product.image }}" alt="{{ product.name }} fragrance bottle">{% else %}<span class="product-monogram">M.</span>{% endif %}<span class="portrait-index">EAU DE PARFUM</span></div>
+      <div class="accord-section"><div class="mini-heading"><span>SCENT PROFILE</span><span>{{ product.size_label }}</span></div><h2>Main accords</h2><ul class="accords">{% for accord in accords %}<li><span>{{ accord.name }}</span><span class="bar"><i style="width:{{ (accord.level / 8 * 100)|round }}%"></i></span></li>{% else %}<li class="muted">A unique blend from the house.</li>{% endfor %}</ul></div>
+    </section>
+    <section class="buy">
+      <p class="eyebrow">Devotion in every note</p>
+      <h1>{{ product.name }}<span class="gold-period">.</span></h1>
+      <p class="product-subtitle">EAU DE PARFUM · {{ product.size_label|upper }}</p>
+      <div class="price-rating"><strong>{{ product.price|peso }}</strong><span class="stars" aria-label="Rated {{ product.rating }} out of 5 stars">{{ '★' * product.rating }}{{ '☆' * (5 - product.rating) }}</span></div>
+      <div class="inventory-pill {% if product.stock == 0 %}unavailable{% endif %}"><span class="status-dot"></span>{% if product.stock == 0 %}Currently out of stock{% elif product.stock <= product.reorder_level %}Only {{ product.stock }} left in stock{% else %}In stock · Ready to order{% endif %}</div>
+      <div class="product-divider"></div>
+      <p class="product-description">{{ product.description }}</p>
+      <form method="post" action="/cart/add" class="form add-to-cart"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="product_id" value="{{ product.id }}"><label for="product-qty">QUANTITY</label><div class="purchase-actions"><div class="quantity-block"><input id="product-qty" name="qty" type="number" min="1" max="{{ product.stock or 1 }}" value="1" required {% if product.stock == 0 %}disabled{% endif %}></div><div class="purchase-buttons"><button type="submit" class="btn btn-outline" {% if product.stock == 0 %}disabled{% endif %}>{{ 'Sold out' if product.stock == 0 else 'Add to bag' }} <span aria-hidden="true">＋</span></button><button type="submit" class="btn btn-ink" formaction="/buy-now" {% if product.stock == 0 %}disabled{% endif %}>Buy now / Checkout <span aria-hidden="true">↗</span></button></div></div><p class="action-hint">Add to bag to shop more, or buy now to check out this fragrance only.</p></form>
+      <p class="purchase-note">Thoughtfully made. Distinctively Martyr.</p>
+      <div class="product-attributes"><div><span>IDEAL WEAR</span><strong>{{ product.season }}</strong></div><div><span>LONGEVITY</span><strong>{{ product.longevity }}</strong></div><div><span>SIZE</span><strong>{{ product.size_label }}</strong></div></div>
+    </section>
+  </div>
+  <section class="related-section"><div class="section-heading"><div><p class="eyebrow">Continue the journey</p><h2>You might also love</h2></div><a class="text-link" href="/collections">Shop all <span>↗</span></a></div><div class="catalog related-catalog">{% for item in related %}<a class="scent" href="/product/{{ item.id }}"><div class="scent-frame"><span class="scent-tag">THE HOUSE</span>{% if item.image %}<img loading="lazy" src="{{ item.image }}" alt="{{ item.name }}">{% else %}<span class="product-monogram">M.</span>{% endif %}<span class="scent-arrow">↗</span></div><div class="scent-details"><div><p class="scent-name">{{ item.name }}</p><p class="scent-size">{{ item.size_label }}</p></div><p class="scent-price">{{ item.price|peso }}</p></div></a>{% endfor %}</div></section>
+</main>
+{% endblock %}

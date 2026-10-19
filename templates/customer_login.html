@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Customer Sign In | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page customer-auth-page">
+  <div class="customer-auth-layout">
+    <aside class="auth-story"><div class="auth-story-content"><span class="overline light">THE HOUSE OF MARTYR</span><h2>Your scent.<br><em>Your story.</em></h2><p>Return to your collection, discover new favorites, and keep a record of the moments you made yours.</p><span class="auth-story-footer">DEVOTION IN EVERY NOTE.</span></div></aside>
+    <section class="auth-panel"><p class="eyebrow">Welcome back</p><h1 class="page-title">Sign in<span class="gold-period">.</span></h1><p class="page-subtitle">A personal place for your Martyr purchases.</p>
+      {% with messages = get_flashed_messages() %}{% for message in messages %}<p class="flash" role="status">{{ message }}</p>{% endfor %}{% endwith %}
+      {% if error %}<p class="flash" role="alert">{{ error }}</p>{% endif %}
+      <form class="form account-form" action="{{ url_for('customer_login') }}" method="post"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="next" value="{{ request.args.get('next', '') or request.form.get('next', '') }}"><label>Email address<input type="email" name="email" maxlength="160" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input type="password" name="password" autocomplete="current-password" required placeholder="Enter your password"></label><button class="btn btn-ink btn-wide" type="submit">Sign in to my account <span>↗</span></button></form>
+      <p class="auth-switch">New to Martyr? <a href="{{ url_for('customer_register', next=request.args.get('next', '') or request.form.get('next', '')) }}">Create a customer account ↗</a></p>
+      <p class="account-helper">Demo payments only. Staff members: <a href="{{ url_for('admin_login') }}">admin login</a>.</p>
+    </section>
+  </div>
+</main>
+{% endblock %}

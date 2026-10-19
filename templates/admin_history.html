@@ -1,0 +1,8 @@
+{% extends "admin_base.html" %}
+{% block title %}Inventory History | Martyr House Register{% endblock %}
+{% block breadcrumb %}Inventory history{% endblock %}
+{% block eyebrow %}Every move matters{% endblock %}
+{% block heading %}Inventory history<span class="gold-period">.</span>{% endblock %}
+{% block subtitle %}A clear log of sales deductions and manual stock adjustments.{% endblock %}
+{% block page_action %}<a class="btn btn-outline" href="/admin/stock">Adjust stock ↗</a>{% endblock %}
+{% block content %}<section class="admin-card"><div class="card-header"><div><p class="mini-heading">STOCK MOVEMENTS</p><h2>Movement log</h2></div><span class="subtle-pill">{{ rows|length }} ENTRIES</span></div><div class="table-scroll"><table class="sheet"><thead><tr><th>Recorded at</th><th>Fragrance</th><th>Change</th><th>Source</th><th>Note</th></tr></thead><tbody>{% for row in rows %}<tr><td>{{ row.created_at }}</td><td><strong>{{ row.product_name }}</strong></td><td><span class="stock-change {% if row.change_qty > 0 %}positive{% else %}negative{% endif %}">{{ '+' if row.change_qty > 0 else '' }}{{ row.change_qty }}</span></td><td>{{ row.reason|replace('-', ' ')|title }}</td><td class="muted">{{ row.note }}</td></tr>{% else %}<tr><td colspan="5" class="empty-table">No movement history yet.</td></tr>{% endfor %}</tbody></table></div></section>{% endblock %}

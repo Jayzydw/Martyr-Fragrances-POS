@@ -1,0 +1,8 @@
+{% extends "admin_base.html" %}
+{% block title %}Sales | Martyr House Register{% endblock %}
+{% block breadcrumb %}Sales{% endblock %}
+{% block eyebrow %}The transaction journal{% endblock %}
+{% block heading %}Sales history<span class="gold-period">.</span>{% endblock %}
+{% block subtitle %}Every order recorded across the storefront and register.{% endblock %}
+{% block page_action %}<a class="btn btn-ink" href="/admin/register">+ New sale</a>{% endblock %}
+{% block content %}<section class="admin-card"><div class="card-header"><div><p class="mini-heading">ALL TRANSACTIONS</p><h2>Receipts</h2></div><span class="subtle-pill">{{ sales|length }} SALES</span></div><div class="table-scroll"><table class="sheet"><thead><tr><th>Receipt</th><th>Sold at</th><th>Channel</th><th>Payment</th><th>Items</th><th>Total</th></tr></thead><tbody>{% for sale in sales %}<tr><td><a class="row-link" href="/receipt/{{ sale.sale_number }}">{{ sale.sale_number }} ↗</a></td><td>{{ sale.sold_at }}</td><td><span class="status-label healthy">{{ sale.channel|title }}</span></td><td>{{ sale.payment_method }}</td><td>{% for item in grouped.get(sale.id, []) %}<span class="block">{{ item.product_name }} × {{ item.quantity }}</span>{% endfor %}</td><td><strong>{{ sale.total|peso }}</strong></td></tr>{% else %}<tr><td colspan="6" class="empty-table">No sales yet. Record a new sale to see it here.</td></tr>{% endfor %}</tbody></table></div></section>{% endblock %}

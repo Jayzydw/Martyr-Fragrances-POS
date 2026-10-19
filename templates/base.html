@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12100e">
+  <meta name="description" content="Martyr Fragrances — devotion in every note. Discover signature fragrances and modern classics.">
+  <title>{% block title %}Martyr Fragrances | Devotion in Every Note{% endblock %}</title>
+  <link rel="stylesheet" href="/style.css?v=11">
+</head>
+<body class="{% if dark %}home-page{% endif %}">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header {% if dark %}on-dark{% endif %}">
+    <a class="brand" href="/" aria-label="Martyr Fragrances home">
+      <img src="/brand/martyr_logo_mark.png" alt="">
+      <span>MARTYR<small>FRAGRANCES</small></span>
+    </a>
+    <input class="menu-check" id="menu" type="checkbox" aria-label="Open navigation">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+      <a href="/collections" class="{% if request.endpoint in ['collections', 'product_page'] %}active{% endif %}">Collections</a>
+      <a href="/reviews" class="{% if request.endpoint == 'reviews' %}active{% endif %}">Reviews</a>
+      <a href="/about" class="{% if request.endpoint == 'about' %}active{% endif %}">Our story</a>
+      <a href="{{ url_for('customer_account') if customer_id else url_for('customer_login') }}" class="mobile-account-link {% if request.endpoint and request.endpoint.startswith('customer_') %}active{% endif %}">My account</a>
+    </nav>
+    <div class="header-tools">
+      <a href="{{ url_for('customer_account') if customer_id else url_for('customer_login') }}" class="account-link" aria-label="{{ 'Your customer account' if customer_id else 'Customer sign in' }}">{{ 'My account' if customer_id else 'Sign in' }}</a>
+      <a href="/cart" class="cart-link" aria-label="Cart, {{ cart_count }} items">Bag <span class="bag-count">{{ cart_count }}</span></a>
+    </div>
+    <label class="menu-btn" for="menu" aria-label="Toggle menu"><span></span></label>
+  </header>
+  {% block content %}{% endblock %}
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="/brand/martyr_logo_symbol.png" alt=""><span>MARTYR <small>FRAGRANCES</small></span></div>
+    <div><span class="footer-caption">DEVOTION IN EVERY NOTE.</span><p>Crafted to leave a lasting impression.</p></div>
+    <div class="footer-links"><a href="/collections">The collection</a><a href="/about">Our story</a><a href="{{ url_for('customer_account') if customer_id else url_for('customer_login') }}">Customer account</a><a href="/admin/login">Staff / House register</a></div>
+    <div class="footer-bottom"><span>© Martyr Fragrances · Manila, Philippines</span><span>Designed for the extraordinary.</span></div>
+  </footer>
+  <script src="/site.js?v=11" defer></script>
+</body>
+</html>

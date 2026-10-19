@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}My Account | Martyr Fragrances{% endblock %}
+{% block content %}
+<main id="main-content" class="wrap page customer-dashboard">
+  <div class="page-heading"><div><p class="eyebrow">Your personal house</p><h1 class="page-title">My account<span class="gold-period">.</span></h1><p class="page-subtitle">Welcome back, {{ account.full_name }}. Your scent journey, all in one place.</p></div><form action="{{ url_for('customer_logout') }}" method="post"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button type="submit" class="btn btn-outline">Sign out <span>↗</span></button></form></div>
+  {% with messages = get_flashed_messages() %}{% for message in messages %}<p class="flash" role="status">{{ message }}</p>{% endfor %}{% endwith %}
+  <div class="customer-dashboard-grid">
+    <section class="account-panel"><div class="account-panel-heading"><span class="overline">01 / PROFILE</span><h2>Your details</h2></div><p class="profile-initial">{{ account.full_name[0]|upper }}</p><form action="{{ url_for('customer_profile_update') }}" method="post" class="form"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><label>Full name<input type="text" name="full_name" minlength="2" maxlength="100" required value="{{ account.full_name }}"></label><label>Email address<input type="email" value="{{ account.email }}" readonly title="Email changes aren't available in this demo"></label><button class="btn btn-outline" type="submit">Save profile <span>↗</span></button></form><p class="account-helper">Member since {{ account.created_at[:10] }} · Customer account</p></section>
+    <section class="account-panel orders-panel"><div class="account-panel-heading"><span class="overline">02 / PURCHASES</span><h2>Order history <small>{{ orders|length }} {{ 'order' if orders|length == 1 else 'orders' }}</small></h2></div>
+    {% if orders %}<div class="order-history-list">{% for order in orders %}<article class="account-order"><div><span class="overline">ORDER {{ '%02d'|format(loop.index) }}</span><h3>{{ order.sale_number }}</h3><p>{{ order.sold_at[:16] }} · {{ order.payment_method }} (demo)</p></div><div class="order-history-amount"><strong>{{ order.total|peso }}</strong><a href="{{ url_for('receipt', sale_number=order.sale_number) }}" class="text-link">View receipt ↗</a></div></article>{% endfor %}</div>{% else %}<div class="no-orders"><span class="empty-monogram">M.</span><h3>Your story starts here.</h3><p>No orders yet. Discover a fragrance and your demo orders will show up here.</p><a href="{{ url_for('collections') }}" class="btn btn-ink">Explore the collection <span>↗</span></a></div>{% endif %}
+    </section>
+  </div>
+</main>
+{% endblock %}
